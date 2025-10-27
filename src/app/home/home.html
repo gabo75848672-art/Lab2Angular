@@ -2,8 +2,85 @@
         <section class="page-section" id="services">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading text-uppercase">TABLA PRODUCTOS</h2>
+                    <h3 class="section-subheading text-muted">CATEGORIAS</h3>
+                     
+                    <table class="table">
+                    <thead>
+                    <tr>
+                        <th>nombre</th>
+                        <th>precio</th>
+                        <th>categoriaID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                       @for (p of productos; track p.id) {
+    <tr>
+        <td>{{p.nombre}}</td>
+        <td>{{p.precio}}</td>
+        <td>{{p.categoria.nombre}}</td>
+    </tr>
+} @empty {
+    <tr>
+        <td colspan="3" class="text-center text-muted py-4">
+            No hay productos registrados.
+        </td>
+    </tr>
+}
+<div class="card shadow-lg p-4 mb-5 border-success">
+        <h4 class="text-success mb-3">
+            <i class="bi bi-plus-square-fill me-2"></i> Registrar Producto
+        </h4>
+        
+        <form [formGroup]="productoForm" (ngSubmit)="AgregarProducto()">
+            
+            <div class="row g-3">
+                
+                <div class="col-md-5">
+                    <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre del Producto">
+                    @if (productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched) {
+                        <div class="text-danger small mt-1">Nombre obligatorio.</div>
+                    }
+                </div>
+          
+                <div class="col-md-3">
+                    <select formControlName="categoria_id" class="form-select">
+                        <option [ngValue]="null" disabled>Categoría</option>
+                        @for (cat of categorias; track cat.id) {
+                            <option [value]="cat.id">{{ cat.nombre }}</option>
+                        }
+                    </select>
+                    @if (productoForm.get('categoria_id')?.invalid && productoForm.get('categoria_id')?.touched) {
+                        <div class="text-danger small mt-1">Categoría obligatoria.</div>
+                    }
+                </div>
+
+                
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" formControlName="precio" class="form-control" placeholder="Precio" step="0.01">
+                    </div>
+ @if (productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched) {
+                        <div class="text-danger small mt-1">Precio > 0.</div>
+                    }
+                </div>
+                
+               
+                <div class="col-md-2 d-grid">
+                    <button type="submit" 
+                            class="btn btn-success" 
+                            [disabled]="productoForm.invalid">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+                    </tbody>
+
+                </table>
                 </div>
                 <div class="row text-center">
                     <div class="col-md-4">
@@ -13,6 +90,7 @@
                         </span>
                         <h4 class="my-3">E-Commerce</h4>
                         <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                    
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
